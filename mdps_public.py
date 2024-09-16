@@ -78,7 +78,7 @@ if(selected == 'Diabetes Prediction'):
         Age = st.text_input("Age of the person")
     
 
-if(selected == 'Heart Disease Prediction using Ml')
+if(selected == 'Heart Disease Prediction using Ml'):
   #page title
   st.title('Heart Disease Prediction using Ml')
 
