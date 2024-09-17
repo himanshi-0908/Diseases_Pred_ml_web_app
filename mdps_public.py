@@ -119,7 +119,7 @@ if(selected == 'Heart Disease Prediction using Ml'):
       #code for Prediction
       heart_diagnosis =''
 
-#crating a button for prediction
+ #creating a button for prediction
  if st.button('Heart Diseases Test Result'):
      heart_prediction = heart_model.predict([[Age, Sex, Cp, Trestbps, Chol, Fbs, Restcg, Thalach, Exang, Oldpeak, Slope, Ca, Thal]])
      if (heart_prediction[0]==1):
@@ -162,31 +162,4 @@ if(selected == 'Heart Disease Prediction using Ml'):
  
 
       
-      #creating a button for Prediction
-      if st.button('Heart Diseases Result'):
-          diab_prediction = diabetes_model.predict([[Age, Sex, p, trestbps, chol, ]])
-          if (diab_prediction[0]==1):
-              diab_diagnosis ='The Person is Diabetic'
-          else:
-              diab_diagnosis = 'The Person is not Diabetic'
-      st.success(diab_diagnosis)
-      #getting the input data from the users
-      col1, col2, col3 = st.columns(3)
-      with col1:
-          Pregrancies = st.text_input("Number of Pregrancies")
-      with col2:
-          Glucose = st.text_input('Glucose level')
-      with col3:
-          BloodPressure = st.text_input('Blood Pressure Value')
-      with col1:
-          SkinThickness = st.text_input('Skin Thickness Value')
-      with col2:
-          Insulin = st.text_input('Insulin Level')
-      with col3:
-          BMI = st.text_input('BMI Value')
-      with col1:
-          DiabetesPredigreeFunction = st.text_input('Diabetes Pedigree Function value')
-      with col2:
-          Age = st.text_input("Age of the person")
-  
-  
+      
