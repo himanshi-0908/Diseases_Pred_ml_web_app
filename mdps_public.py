@@ -1,165 +1,155 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Sep 15 09:20:18 2024
-
-@author: Lenovo
-"""
-
+import os
 import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
 
-#loading the saved model
-diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
-heart_disease_model = pickle.load(open('heart_disease_model.sav', 'rb'))
+# Set page configuration
+st.set_page_config(page_title="Health Assistant",
+                   layout="wide",
+                   page_icon="🧑‍⚕️")
 
-#sidebar for navigate
+    
+# getting the working directory of the main.py
+working_dir = os.path.dirname(os.path.abspath(__file__))
+
+# loading the saved models
+
+diabetes_model = pickle.load(open('C:/Users/Lenovo/Desktop/multiple diseases prediction/saved model - Copy/diabetes_model.sav', 'rb'))
+
+heart_disease_model = pickle.load(open('C:/Users/Lenovo/Desktop/multiple diseases prediction/saved model - Copy/heart_disease_model.sav', 'rb'))
+
+
+
+# sidebar for navigation
 with st.sidebar:
     selected = option_menu('Multiple Disease Prediction System',
+
                            ['Diabetes Prediction',
                             'Heart Disease Prediction'],
-                           icons = ['activity','heart'],
-                           default_index = 0)
+                           menu_icon='hospital-fill',
+                           icons=['activity', 'heart', 'person'],
+                           default_index=0)
 
-#Diabetes Prediction Page
-if(selected == 'Diabetes Prediction'):
-    #page title
-    st.title('Diabetes Prediction using Ml')
-    #getting the input data from the users
+
+# Diabetes Prediction Page
+if selected == 'Diabetes Prediction':
+
+    # page title
+    st.title('Diabetes Prediction using ML')
+
+    # getting the input data from the user
     col1, col2, col3 = st.columns(3)
+
     with col1:
-        Pregrancies = st.text_input("Number of Pregrancies")
+        Pregnancies = st.text_input('Number of Pregnancies')
+
     with col2:
-        Glucose = st.text_input('Glucose level')
+        Glucose = st.text_input('Glucose Level')
+
     with col3:
-        BloodPressure = st.text_input('Blood Pressure Value')
+        BloodPressure = st.text_input('Blood Pressure value')
+
     with col1:
-        SkinThickness = st.text_input('Skin Thickness Value')
+        SkinThickness = st.text_input('Skin Thickness value')
+
     with col2:
         Insulin = st.text_input('Insulin Level')
-    with col3:
-        BMI = st.text_input('BMI Value')
-    with col1:
-        DiabetesPredigreeFunction = st.text_input('Diabetes Pedigree Function value')
-    with col2:
-        Age = st.text_input("Age of the person")
-    
-    
-    
 
-    #code for Prediction
-    diab_diagnosis =''
-    
-    #creating a button for Prediction
+    with col3:
+        BMI = st.text_input('BMI value')
+
+    with col1:
+        DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function value')
+
+    with col2:
+        Age = st.text_input('Age of the Person')
+
+
+    # code for Prediction
+    diab_diagnosis = ''
+
+    # creating a button for Prediction
+
     if st.button('Diabetes Test Result'):
-        diab_prediction = diabetes_model.predict([[Pregrancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]])
-        if (diab_prediction[0]==1):
-            diab_diagnosis ='The Person is Diabetic'
+
+        user_input = [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin,
+                      BMI, DiabetesPedigreeFunction, Age]
+
+        user_input = [float(x) for x in user_input]
+
+        diab_prediction = diabetes_model.predict([user_input])
+
+        if diab_prediction[0] == 1:
+            diab_diagnosis = 'The person is diabetic'
         else:
-            diab_diagnosis = 'The Person is not Diabetic'
+            diab_diagnosis = 'The person is not diabetic'
+
     st.success(diab_diagnosis)
-    #getting the input data from the users
+
+# Heart Disease Prediction Page
+if selected == 'Heart Disease Prediction':
+
+    # page title
+    st.title('Heart Disease Prediction using ML')
+
     col1, col2, col3 = st.columns(3)
+
     with col1:
-        Pregrancies = st.text_input("Number of Pregrancies")
+        age = st.text_input('Age')
+
     with col2:
-        Glucose = st.text_input('Glucose level')
+        sex = st.text_input('Sex')
+
     with col3:
-        BloodPressure = st.text_input('Blood Pressure Value')
+        cp = st.text_input('Chest Pain types')
+
     with col1:
-        SkinThickness = st.text_input('Skin Thickness Value')
+        trestbps = st.text_input('Resting Blood Pressure')
+
     with col2:
-        Insulin = st.text_input('Insulin Level')
+        chol = st.text_input('Serum Cholestoral in mg/dl')
+
     with col3:
-        BMI = st.text_input('BMI Value')
+        fbs = st.text_input('Fasting Blood Sugar > 120 mg/dl')
+
     with col1:
-        DiabetesPredigreeFunction = st.text_input('Diabetes Pedigree Function value')
+        restecg = st.text_input('Resting Electrocardiographic results')
+
     with col2:
-        Age = st.text_input("Age of the person")
-    
+        thalach = st.text_input('Maximum Heart Rate achieved')
 
-if(selected == 'Heart Disease Prediction using Ml'):
-  #page title
-  st.title('Heart Disease Prediction using Ml')
+    with col3:
+        exang = st.text_input('Exercise Induced Angina')
 
+    with col1:
+        oldpeak = st.text_input('ST depression induced by exercise')
 
-  #getting the input data from the users
-  col1, col2, col3 = st.columns(3)
-  with col1:
-      age = st.text_input("Your age: ")
-  with col2:
-      sex = st.text_input('Your sex: ')
-  with col3:
-      cp = st.text_input('Enter your cp: ')
-  with col1:
-      Trestbps = st.text_input('Enter your TrestBPS: ')
-  with col2:
-      chol = st.text_input('Enter your Chloestrol level: ')
-  with col3:
-      BMI = st.text_input('Enter your BMI Value: ')
-  with col1:
-      FBS = st.text_input('Enter the FBS value: ')
-  with col2:
-      Restecg = st.text_input('Enter your Restecg: ')
-  with col3:
-      thalach = st.text_input('Enter your thalach: ')
-  with col1:
-      exang = st.text_input('Enter your Exang: ')
-  with col2:
-      oldpeak = st.text_input('Enter your oldpeak: ')
-  with col3:
-      oldpeak = st.text_input('Enter your oldpeak: ')
-  with col1:
-      slope = st.text_input('Enter your slope: ')
-  with col2:
-      ca = st.text_input('Enter your ca value: ')
-  with col3:
-      thal = st.text_input('Enter your thal value: ')
-      
-      #code for Prediction
-      heart_diagnosis =''
+    with col2:
+        slope = st.text_input('Slope of the peak exercise ST segment')
 
- #creating a button for prediction
- if st.button('Heart Diseases Test Result'):
-     heart_prediction = heart_model.predict([[Age, Sex, Cp, Trestbps, Chol, Fbs, Restcg, Thalach, Exang, Oldpeak, Slope, Ca, Thal]])
-     if (heart_prediction[0]==1):
-         heart_diagnosis ='The Person is has high rate of Heart Disease'
-     else:
-         heart_diagnosis = 'The Person has not high rate of Heart Disease'
- st.success(heart_diagnosis)
- #getting the input data from the users
- col1, col2, col3 = st.columns(3)
-  with col1:
-      age = st.text_input("Your age: ")
-  with col2:
-      sex = st.text_input('Your sex: ')
-  with col3:
-      cp = st.text_input('Enter your cp: ')
-  with col1:
-      Trestbps = st.text_input('Enter your TrestBPS: ')
-  with col2:
-      chol = st.text_input('Enter your Chloestrol level: ')
-  with col3:
-      BMI = st.text_input('Enter your BMI Value: ')
-  with col1:
-      FBS = st.text_input('Enter the FBS value: ')
-  with col2:
-      Restecg = st.text_input('Enter your Restecg: ')
-  with col3:
-      thalach = st.text_input('Enter your thalach: ')
-  with col1:
-      exang = st.text_input('Enter your Exang: ')
-  with col2:
-      oldpeak = st.text_input('Enter your oldpeak: ')
-  with col3:
-      oldpeak = st.text_input('Enter your oldpeak: ')
-  with col1:
-      slope = st.text_input('Enter your slope: ')
-  with col2:
-      ca = st.text_input('Enter your ca value: ')
-  with col3:
-      thal = st.text_input('Enter your thal value: ')
- 
+    with col3:
+        ca = st.text_input('Major vessels colored by flourosopy')
 
-      
-      
+    with col1:
+        thal = st.text_input('thal: 0 = normal; 1 = fixed defect; 2 = reversable defect')
+
+    # code for Prediction
+    heart_diagnosis = ''
+
+    # creating a button for Prediction
+
+    if st.button('Heart Disease Test Result'):
+
+        user_input = [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
+
+        user_input = [float(x) for x in user_input]
+
+        heart_prediction = heart_disease_model.predict([user_input])
+
+        if heart_prediction[0] == 1:
+            heart_diagnosis = 'The person is having heart disease'
+        else:
+            heart_diagnosis = 'The person does not have any heart disease'
+
+    st.success(heart_diagnosis)
+
